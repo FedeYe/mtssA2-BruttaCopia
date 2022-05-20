@@ -28,6 +28,9 @@ public class BillImpl implements Bill{
         if(itemsOrdered == null) {
             throw new BillException("Lista ordini nulla");
         }
+        if (itemsOrdered.size() > 30) {
+            throw new BillException("Limite ordine superato");
+        }
         for (EItem item : itemsOrdered) {
             total = total + item.getPrice(); 
             //trovo processore più economico in lista

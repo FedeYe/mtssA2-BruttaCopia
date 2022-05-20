@@ -90,4 +90,14 @@ public class BillImplTest {
         }    
         assertEquals(1242.00, testBill.getOrderPrice(itemsOrdered,user), 0.0);
     }
+
+    @Test(expected=BillException.class)
+    public void testPiùDiTrentaElementiPerOrdine() {
+
+        for(int i=0; i<40; i++) {
+            itemsOrdered.add(new EItem( TipoItem.Motherboard, "Madre Mia",69.00));
+        }
+
+        testBill.getOrderPrice(itemsOrdered, user);
+    }
 }
