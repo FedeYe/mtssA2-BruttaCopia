@@ -4,12 +4,13 @@
 ////////////////////////////////////////////////////////////////////
 package it.unipd.mtss.business;
 
-import it.unipd.mtss.business.BillImpl;
 import it.unipd.mtss.business.exception.BillException;
 import it.unipd.mtss.model.TipoItem;
 import it.unipd.mtss.model.EItem;
 import it.unipd.mtss.model.User;
+import it.unipd.mtss.model.Order;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
@@ -21,11 +22,13 @@ public class BillImplTest {
     private List<EItem> itemsOrdered;
     private BillImpl testBill; 
     private User user; 
+    private LocalTime oreSeiMezza;
     
     @Before
     public void setup() {
         itemsOrdered = new ArrayList<EItem>();
         testBill = new BillImpl();
+        oreSeiMezza = LocalTime.of(18,30,00,00);
         user = new User("FedeYe","Federico","Ye",LocalDate.of(2001, 2, 22));
     }
     
@@ -108,5 +111,62 @@ public class BillImplTest {
 
         itemsOrdered.add(new EItem( TipoItem.Mouse, "Zeus",5.00)); 
         assertEquals(7.00, testBill.getOrderPrice(itemsOrdered,user), 0.0);
+    }
+
+    @Test
+    public void testOrdiniRegalatiAdUserCheSonoMinorenni() {
+
+        //vettore che rappresenta lista con tutti gli ordini
+        List<Order> ordini = new ArrayList<Order>();
+
+        itemsOrdered.add(new EItem( TipoItem.Processor, "Amd Mark2", 150.00));
+        itemsOrdered.add(new EItem( TipoItem.Motherboard, "Madre Mia", 69.00));
+        //11 utenti minorenni
+        String[] nomiUtentiMinori =new String[]{"Mario", "Luigi", "Peach", "Wario", "Waluigi",
+                        "Pandolfo", "Federico", "Rossi", "Yoshi", "Sonic", "Pikachu", "Raichu"};
+        User user = null;
+        //inserisco 12 ordini
+	  int i = 11;
+	  while(i > 0) {
+            //nuovo utente minorenne
+            user = new User(nomiUtentiMinori[i]+"_test",nomiUtentiMinori[i],"prova",LocalDate.of(2010, 1, 1));;
+            //aggiungo il suo ordine
+            ordini.add(new Order(itemsOrdered, user,  oreSeiMezza, testBill.getOrderPrice(itemsOrdered, user)));
+		i--;
+        }
+
+        List<Order> ordiniGratis = testBill.getFreeOrders(ordini);
+        int numeroOrdiniRegalati = 0;
+
+        for (Order ord : ordiniGratis) {
+            if(ord.getPrice() == 0) {
+                numeroOrdiniRegalati++;
+            }
+        }
+        assertEquals(10,numeroOrdiniRegalati); 
+    }
+
+    //se non vengono effettuati almeno 10 ordini, nessun regalo 
+    @Test(expected=BillException.class)
+    public void testOrdiniRegalatiSeNumeroDiOrdiniMinoreDi10() { 
+
+        //vettore che rappresenta con tutti gli ordini
+        List<Order> ordini = new ArrayList<Order>();
+
+        itemsOrdered.add(new EItem( TipoItem.Processor, "Amd Mark2", 150.00));
+        //solo 4 utenti minorenni
+        String[] nomiUtentiMinori =new String[]{"Mario", "Luigi", "Yoshi", "Peach"};
+        User user = null;
+        //inserisco 4 ordini
+	 int i = 3;
+        while(i > 0) {
+            //nuovo utente minorenne
+            user = new User(nomiUtentiMinori[i]+"_test",nomiUtentiMinori[i],"prova",LocalDate.of(2010, 1, 1));;
+            //aggiungo il suo ordine
+            ordini.add(new Order(itemsOrdered, user,  oreSeiMezza, testBill.getOrderPrice(itemsOrdered, user)));
+		i--;
+        }
+
+        testBill.getFreeOrders(ordini);
     }
 }

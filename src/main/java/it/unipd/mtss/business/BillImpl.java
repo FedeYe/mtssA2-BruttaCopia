@@ -7,8 +7,11 @@ package it.unipd.mtss.business;
 import it.unipd.mtss.business.exception.BillException;
 import it.unipd.mtss.model.EItem;
 import it.unipd.mtss.model.User;
+import it.unipd.mtss.model.Order;
 import it.unipd.mtss.model.TipoItem;
 import java.util.List;
+import java.util.ArrayList;
+import java.time.LocalTime;
 
 public class BillImpl implements Bill{
 
@@ -93,4 +96,36 @@ public class BillImpl implements Bill{
 
         return total;
     }
+
+    public List<Order> getFreeOrders(List<Order> ordini) throws BillException {
+
+        List<Order> ordiniGratis = new ArrayList<Order>();
+        for (int i = 0; i < ordini.size(); i++) {
+
+            if(ordini.get(i).getUser().getAge()<18 && //se l'utente è minorenne
+             ordini.get(i).getOraOrdine().isAfter(LocalTime.of(18,00,00,00)) && //l'ora locale è dopo le 18
+             ordini.get(i).getOraOrdine().isBefore(LocalTime.of(19,00,00,00))){ //l'ora locale prima delle 19
+
+                ordiniGratis.add(ordini.get(i)); //ordine in regalo
+            }
+        }
+
+        if(ordiniGratis.size() > 9){
+              for(int i=0; i<10; i++) {
+              //numero a caso tra 1 e numero ordini
+              int randomIndex = (int)(ordiniGratis.size() * Math.random());
+              if(ordiniGratis.get(randomIndex).getPrice() == 0) {
+                  i--;
+              }
+              else {
+              ordiniGratis.get(randomIndex).setPrice(0);
+              }
+            }
+        }
+        else {
+            throw new BillException("Non ci sono abbastanza ordini per regali");
+        }
+        return ordiniGratis;
+    }
+
 }
