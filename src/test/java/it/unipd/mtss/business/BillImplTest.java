@@ -53,4 +53,12 @@ public class BillImplTest {
         testBill.getOrderPrice(itemsOrdered, user);
     }
     
+    @Test
+    public void testTotaleConScontoSulMenoCostosoSeCinqueOPiùProcessori() {
+
+        for(int i=0; i<6; i++) {
+            itemsOrdered.add(new EItem( TipoItem.Processor, "Amd Mark2",150.00));
+        }       
+        assertEquals(675.00, testBill.getOrderPrice(itemsOrdered,user), 0.0);
+    }
 }
