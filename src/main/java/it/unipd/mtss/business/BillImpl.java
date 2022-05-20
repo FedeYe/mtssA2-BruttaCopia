@@ -77,7 +77,11 @@ public class BillImpl implements Bill{
         if (tastiere == mouse && tastiere != 0) {
             total = total - MouseOTastieraMenoCostosa.getPrice();
         }
-        
+
+        //se il totale supera 1000, si applica uno sconto del 10% sul totale
+        if(total > 1000){
+            total = total * 0.9;
+        }
         return total;
     }
 }
