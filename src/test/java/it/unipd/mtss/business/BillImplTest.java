@@ -54,11 +54,20 @@ public class BillImplTest {
     }
     
     @Test
-    public void testTotaleConScontoSulMenoCostosoSeCinqueOPiùProcessori() {
+    public void testTotaleConScontoSulMenoCostosoSeNumeroDiProcessoriPiùDiCinque() {
 
         for(int i=0; i<6; i++) {
             itemsOrdered.add(new EItem( TipoItem.Processor, "Amd Mark2",150.00));
         }       
         assertEquals(825.00, testBill.getOrderPrice(itemsOrdered,user), 0.0);
+    }
+
+    @Test
+    public void testTotaleConMouseMenoCostosoRegalatoSeNumeroDiMousePiùDiDieci() {
+
+        for(int i=0; i<11; i++) {
+            itemsOrdered.add(new EItem( TipoItem.Mouse, "Poseidon",40.00));
+        }       
+        assertEquals(400.00, testBill.getOrderPrice(itemsOrdered,user), 0.0);
     }
 }
