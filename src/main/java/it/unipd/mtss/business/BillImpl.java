@@ -85,6 +85,12 @@ public class BillImpl implements Bill{
         if(total > 1000){
             total = total * 0.9;
         }
+
+        //se il totale è inferiore ai 10 euro, aggiungo una commissione di 2 euro
+        if(total < 10){
+            total = total + 2;
+        }
+
         return total;
     }
 }

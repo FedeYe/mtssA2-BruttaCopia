@@ -49,6 +49,7 @@ public class BillImplTest {
     
     @Test(expected=NullPointerException.class)
     public void testCalcoloPrezzoTotaleDataUnaListaOrdiniNulla() {
+
         itemsOrdered = null;
         testBill.getOrderPrice(itemsOrdered, user);
     }
@@ -85,6 +86,7 @@ public class BillImplTest {
 
     @Test
     public void testTotaleConScontoSeLaSpesaTotaleSuperioreAi1000Euro(){
+
         for(int i=0; i<20; i++) {
             itemsOrdered.add(new EItem( TipoItem.Motherboard, "Madre Mia",69.00));
         }    
@@ -99,5 +101,12 @@ public class BillImplTest {
         }
 
         testBill.getOrderPrice(itemsOrdered, user);
+    }
+
+    @Test
+    public void testAggiuntaCommissioneDi2euroSeTotaleInferioreA10Euro(){
+
+        itemsOrdered.add(new EItem( TipoItem.Mouse, "Zeus",5.00)); 
+        assertEquals(7.00, testBill.getOrderPrice(itemsOrdered,user), 0.0);
     }
 }
