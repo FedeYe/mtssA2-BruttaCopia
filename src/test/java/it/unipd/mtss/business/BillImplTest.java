@@ -70,4 +70,16 @@ public class BillImplTest {
         }       
         assertEquals(400.00, testBill.getOrderPrice(itemsOrdered,user), 0.0);
     }
+
+    @Test
+    public void testTotaleConScontoSulMenoCostosoSeNumeroMouseUgualeNumeroTastiere() {
+
+        for(int i=0; i<4; i++) {
+            itemsOrdered.add(new EItem( TipoItem.Mouse, "Poseidon",40.00));
+        }       
+        for(int i=0; i<4; i++) {
+            itemsOrdered.add(new EItem( TipoItem.Keyboard, "Logitech perry",55.00));
+        }
+        assertEquals(340.00, testBill.getOrderPrice(itemsOrdered,user), 0.0);
+    } 
 }
