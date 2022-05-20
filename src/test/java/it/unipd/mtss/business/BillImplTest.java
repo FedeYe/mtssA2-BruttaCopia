@@ -47,7 +47,7 @@ public class BillImplTest {
         testBill.getOrderPrice(itemsOrdered, user);
     }
     
-    @Test(expected=BillException.class)
+    @Test(expected=NullPointerException.class)
     public void testCalcoloPrezzoTotaleDataUnaListaOrdiniNulla() {
         itemsOrdered = null;
         testBill.getOrderPrice(itemsOrdered, user);

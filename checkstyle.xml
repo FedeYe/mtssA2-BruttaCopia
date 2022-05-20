@@ -4,10 +4,10 @@
 <module name="Checker">
 	<module name="TreeWalker">
 		<module name="BooleanExpressionComplexity">
-		  <property name="max" value="10"/>
+		  <property name="max" value="8"/>
 		</module>
 		<module name="CyclomaticComplexity">
-		  <property name="max" value="40"/>
+		  <property name="max" value="35"/>
 		</module>	
 		<module name="MethodLength">
 		  <property name="tokens" value="METHOD_DEF"/>
@@ -34,7 +34,7 @@
 		<property name="max" value="2500"/>
 	</module>
     	<module name="LineLength">
-		  <property name="max" value="170"/>
+		  <property name="max" value="165"/>
 	</module>
 	<module name="FileTabCharacter">
 		<property name="eachLine" value="true"/>
